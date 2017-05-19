@@ -82,6 +82,18 @@ struct Set {
     bool isEmpty() {
         return first == NULL;
     }
+
+    long cardinality() {
+        if (first == NULL) return 0;
+        long sum = 1;
+
+        Number *temp = first;
+        while (temp->next != NULL) {
+            sum++;
+            temp = temp->next;
+        }
+        return sum;
+    }
 };
 
 void add(Set *set, int value);
@@ -91,6 +103,8 @@ void remove(Set *set, int value);
 void print(Set *set);
 
 bool isEmpty(Set *set);
+
+long cardinality(Set *set);
 
 int main() {
     Set *set = new Set;
@@ -113,6 +127,9 @@ int main() {
             case 4:
                 cout << "Zbior jest: " << (isEmpty(set) ? "pusty" : "niepusty") << endl;
                 break;
+            case 5:
+                cout << "Wielkosc zbioru: " << cardinality(set) << endl;
+                break;
             default:
                 end = true;
                 break;
@@ -134,4 +151,8 @@ void print(Set *set) {
 
 bool isEmpty(Set *set) {
     return set->isEmpty();
+}
+
+long cardinality(Set *set) {
+    return set->cardinality();
 }
