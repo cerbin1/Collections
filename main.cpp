@@ -150,19 +150,34 @@ struct Number {
 struct Set {
     Number *first = NULL;
 
-    void add(int number) {
+    void add(int value) {
         Number *newNumber = new Number();
-        newNumber->value = number;
+        newNumber->value = value;
         if (first == NULL) {
             first = newNumber;
-        } else {
-            Number *temp = first;
+        } else if (isNotADuplication(value)) {
+            Number *temp;
+            temp = first;
             while (temp->next != NULL) {
                 temp = temp->next;
             }
             temp->next = newNumber;
             newNumber->next = NULL;
         }
+    }
+
+    bool isNotADuplication(int value) {
+        if (first->value == value) {
+            return false;
+        }
+        Number *temp = first;
+        while (temp->next != NULL) {
+            if (temp->value == value) {
+                return false;
+            }
+            temp = temp->next;
+        }
+        return true;
     }
 
     void display() {
