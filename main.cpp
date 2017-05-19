@@ -45,7 +45,7 @@ struct Set {
         return true;
     }
 
-    void display() {
+    void print() {
         if (first != NULL) {
             Number *temp = first;
             cout << "Wypisuje: " << endl;
@@ -87,7 +87,7 @@ int main() {
 }
 
 void print(Set *set) {
-    set->display();
+    set->print();
 }
 
 void add(Set *set, int value) {
