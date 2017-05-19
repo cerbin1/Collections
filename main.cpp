@@ -45,20 +45,6 @@ struct Set {
         return true;
     }
 
-    void print() {
-        if (first != NULL) {
-            Number *temp = first;
-            cout << "Wypisuje: " << endl;
-            while (true) {
-                cout << temp->value << endl;
-                temp = temp->next;
-                if (temp == NULL) {
-                    break;
-                }
-            }
-        }
-    }
-
     void remove(int value) {
         if (first == NULL) return;
         if (first->value == value) {
@@ -78,13 +64,27 @@ struct Set {
             temp = temp->next;
         }
     }
+
+    void print() {
+        if (first != NULL) {
+            Number *temp = first;
+            cout << "Wypisuje: " << endl;
+            while (true) {
+                cout << temp->value << endl;
+                temp = temp->next;
+                if (temp == NULL) {
+                    break;
+                }
+            }
+        }
+    }
 };
 
 void add(Set *set, int value);
 
-void print(Set *set);
-
 void remove(Set *set, int value);
+
+void print(Set *set);
 
 int main() {
     Set *set = new Set;
@@ -111,14 +111,14 @@ int main() {
     }
 }
 
-void print(Set *set) {
-    set->print();
-}
-
 void add(Set *set, int value) {
     set->add(value);
 }
 
 void remove(Set *set, int value) {
     set->remove(value);
+}
+
+void print(Set *set) {
+    set->print();
 }
