@@ -78,6 +78,10 @@ struct Set {
             }
         }
     }
+
+    bool isEmpty() {
+        return first == NULL;
+    }
 };
 
 void add(Set *set, int value);
@@ -85,6 +89,8 @@ void add(Set *set, int value);
 void remove(Set *set, int value);
 
 void print(Set *set);
+
+bool isEmpty(Set *set);
 
 int main() {
     Set *set = new Set;
@@ -104,6 +110,9 @@ int main() {
             case 3:
                 print(set);
                 break;
+            case 4:
+                cout << "Zbior jest: " << (isEmpty(set) ? "pusty" : "niepusty") << endl;
+                break;
             default:
                 end = true;
                 break;
@@ -121,4 +130,8 @@ void remove(Set *set, int value) {
 
 void print(Set *set) {
     set->print();
+}
+
+bool isEmpty(Set *set) {
+    return set->isEmpty();
 }
