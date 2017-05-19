@@ -58,11 +58,33 @@ struct Set {
             }
         }
     }
+
+    void remove(int value) {
+        if (first == NULL) return;
+        if (first->value == value) {
+            if (first->value == NULL) {
+                first = NULL;
+            } else {
+                first = first->next;
+            }
+            return;
+        }
+        Number *temp = first;
+        while (temp->next != NULL) {
+            if (temp->next->value == value) {
+                temp->next = temp->next->next;
+                break;
+            }
+            temp = temp->next;
+        }
+    }
 };
 
 void add(Set *set, int value);
 
 void print(Set *set);
+
+void remove(Set *set, int value);
 
 int main() {
     Set *set = new Set;
@@ -75,6 +97,9 @@ int main() {
         switch (option) {
             case 1:
                 add(set, 15);
+                break;
+            case 2:
+                remove(set, 15);
                 break;
             case 3:
                 print(set);
@@ -92,4 +117,8 @@ void print(Set *set) {
 
 void add(Set *set, int value) {
     set->add(value);
+}
+
+void remove(Set *set, int value) {
+    set->remove(value);
 }
