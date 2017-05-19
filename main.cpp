@@ -48,7 +48,7 @@ struct Set {
     void remove(int value) {
         if (first == NULL) return;
         if (first->value == value) {
-            if (first->value == NULL) {
+            if (first->next == NULL) {
                 first = NULL;
             } else {
                 first = first->next;
@@ -94,6 +94,30 @@ struct Set {
         }
         return sum;
     }
+
+    bool isSubset(Set *subset) {
+        if (subset->first != NULL) {
+            Number *temp = subset->first;
+            do {
+                if (!has(temp->value)) {
+                    return false;
+                }
+                temp = temp->next;
+            } while (temp->next != NULL);
+        }
+        return true;
+    }
+
+    bool has(int value) {
+        Number *temp = first;
+        while (temp != NULL) {
+            if (temp->value == value) {
+                return true;
+            }
+            temp = temp->next;
+        }
+        return false;
+    }
 };
 
 void add(Set *set, int value);
@@ -106,6 +130,8 @@ bool isEmpty(Set *set);
 
 long cardinality(Set *set);
 
+bool isSubset(Set *subset, Set *set);
+
 int main() {
     Set *set = new Set;
 
@@ -116,7 +142,9 @@ int main() {
         cin >> option;
         switch (option) {
             case 1:
-                add(set, 15);
+                int number;
+                cin >> number;
+                add(set, number);
                 break;
             case 2:
                 remove(set, 15);
@@ -130,11 +158,23 @@ int main() {
             case 5:
                 cout << "Wielkosc zbioru: " << cardinality(set) << endl;
                 break;
+            case 6: {
+                Set *subSet = new Set;
+                subSet->add(1);
+                subSet->add(2);
+                subSet->add(3);
+                cout << "Czy jest podzbiorem zbioru (1, 2, 3)" << (isSubset(set, subSet) ? "tak" : "nie") << endl;
+                break;
+            }
             default:
                 end = true;
                 break;
         }
     }
+}
+
+bool isSubset(Set *set, Set *subset) {
+    return set->isSubset(subset);
 }
 
 void add(Set *set, int value) {
