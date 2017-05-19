@@ -182,7 +182,7 @@ struct Set {
 
 void add(Set *set, int value);
 
-void display(Set *set);
+void print(Set *set);
 
 int main() {
     Set *set = new Set;
@@ -197,7 +197,7 @@ int main() {
                 add(set, 15);
                 break;
             case 3:
-                display(set);
+                print(set);
                 break;
             default:
                 end = true;
@@ -206,7 +206,7 @@ int main() {
     }
 }
 
-void display(Set *set) {
+void print(Set *set) {
     set->display();
 }
 
