@@ -14,7 +14,9 @@ struct Node {
     }
 };
 
-struct Node *root;
+struct Tree {
+    struct Node *root;
+};
 
 struct Node *findLeftMostChild(struct Node *start) {
     if (start->leftChild != NULL) {
@@ -120,7 +122,7 @@ int randomBetween(int bound1, int bound2) {
 }
 
 int main() {
-    root = NULL;
+    Tree *tree = new Tree();
 
     printf("Podaj ilosc wzlow: ");
     int size;
@@ -128,21 +130,21 @@ int main() {
 
     for (int i = 0; i < size; i++) {
         int randomValue = randomBetween(1, 100);
-        addValue(root, randomValue);
+        tree->addValue(randomValue);
     }
     printf("\n");
 
-    printNodes(root);
+    tree->printNodes();
 
     printf("Wartość węzła do usunięcia: \n");
 
     int k;
     scanf("%d", &k);
-    removeNode(findNodeByValue(root, k));
+    tree->removeNode(tree->findNodeByValue(k));
 
     printf("\n\n");
 
-    printNodes(root);
+    tree->printNodes();
 
     return 0;
 }
