@@ -75,11 +75,11 @@ struct Tree {
         return NULL;
     }
 
-    Node *findLeftMostChild(Node *start) {
-        if (start->leftChild != NULL) {
-            return findLeftMostChild(start->leftChild);
+    Node *findMax(Node *node) {
+        if (node->leftChild != NULL) {
+            return findMax(node->leftChild);
         }
-        return start;
+        return node;
     }
 
     void printNodes(struct Node *start) {
@@ -120,7 +120,7 @@ int randomBetween(int bound1, int bound2) {
 int main() {
     Tree *tree = new Tree();
 
-    std::cout << "Podaj ilosc wzlow: ";
+    std::cout << "Podaj ilosc wezlow: ";
     int size;
     std::cin >> size;
 
