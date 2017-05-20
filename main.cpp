@@ -93,15 +93,18 @@ struct Set {
     }
 
     bool isSubset(Set *subset) {
-        if (!subset->isEmpty()) {
-            Number *temp = subset->first;
-            do {
-                if (!has(temp->value)) {
-                    return false;
-                }
-                temp = temp->next;
-            } while (temp->next != NULL);
+        if (subset->isEmpty()) {
+            return true;
         }
+
+        Number *temp = subset->first;
+        do {
+            if (!has(temp->value)) {
+                return false;
+            }
+            temp = temp->next;
+        } while (temp->next != NULL);
+
         return true;
     }
 
