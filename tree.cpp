@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <algorithm>
+#include <iostream>
+#include <iomanip>
 
 struct Node {
     int value;
@@ -125,6 +127,27 @@ struct Tree {
             printNodes(start->rightChild);
         }
     }
+
+    void visualize() {
+        visualize(root, 0);
+    }
+
+    void visualize(Node *node, int indent) {
+        if (node != NULL) {
+            if (node->rightChild) {
+                visualize(node->rightChild, indent + 4);
+            }
+            if (indent) {
+                std::cout << std::setw(indent) << ' ';
+            }
+            if (node->rightChild) std::cout << " /\n" << std::setw(indent) << ' ';
+            std::cout << node->value << "\n ";
+            if (node->leftChild) {
+                std::cout << std::setw(indent) << ' ' << " \\\n";
+                visualize(node->leftChild, indent + 4);
+            }
+        }
+    }
 };
 
 int randomBetween(int bound1, int bound2) {
@@ -145,7 +168,7 @@ int main() {
     }
     printf("\n");
 
-    tree->printNodes();
+    tree->visualize();
 
     printf("Wartość węzła do usunięcia: \n");
 
@@ -155,7 +178,7 @@ int main() {
 
     printf("\n\n");
 
-    tree->printNodes();
+    tree->visualize();
 
     return 0;
 }
