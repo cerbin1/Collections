@@ -52,12 +52,12 @@ struct Set {
 
     void print() {
         if (isEmpty()) {
-            cout << "Nie ma elementow do wypisania." << endl;
+            cout << "Zbior jest pusty." << endl;
         } else {
-            cout << "Wypisuje: " << endl;
+            cout << "Zbior zawiera: " << endl;
             Number *temp = first;
             while (temp != NULL) {
-                cout << temp->value << endl;
+                cout << temp->value << ", ";
                 temp = temp->next;
             }
         }
@@ -122,80 +122,65 @@ struct Set {
             }
             temp = temp->next;
         }
-        cout << "Wspolna czesc listy i ciagu: " << endl;
-        intersected->print();
         return intersected;
     }
 };
 
-void add(Set *set, int value);
-
-void remove(Set *set, int value);
-
-void print(Set *set);
-
-bool isEmpty(Set *set);
-
-long cardinality(Set *set);
-
-bool isSubset(Set *subset, Set *set);
-
-Set *createUnion(Set *first, Set *second);
-
-Set *intersection(Set *first, Set *second);
-
 int main() {
     Set *set = new Set;
 
-    bool end = false;
-    int option;
-    while (!end) {
-        int number;
-
+    while (true) {
         cout << "Podaj opcje: ";
+
+        int option;
         cin >> option;
+
         switch (option) {
-            case 1:
+            case 1: {
+
+                int number;
                 cin >> number;
-                add(set, number);
+                set->add(number);
                 break;
-            case 2:
-                number;
+            }
+            case 2: {
+                int number;
                 cin >> number;
-                remove(set, number);
+                set->remove(number);
                 break;
+            }
             case 3:
-                print(set);
+                set->print();
                 break;
             case 4:
-                cout << "Zbior jest: " << (isEmpty(set) ? "pusty" : "niepusty") << endl;
+                cout << "Zbior jest: " << (set->isEmpty() ? "pusty" : "niepusty") << endl;
                 break;
             case 5:
-                cout << "Wielkosc zbioru: " << cardinality(set) << endl;
+                cout << "Wielkosc zbioru: " << set->cardinality() << endl;
                 break;
             case 6: {
                 Set *subSet = new Set;
                 subSet->add(1);
                 subSet->add(2);
                 subSet->add(3);
-                cout << "Czy jest podzbiorem zbioru (1, 2, 3)" << (isSubset(set, subSet) ? "tak" : "nie") << endl;
+                cout << "Czy ma podzbior (1, 2, 3): " << (set->isSubset(subSet) ? "tak" : "nie") << endl;
                 break;
             }
-            case 7: { // TODO Add getting numbers to two sets from user
-                Set *subset = new Set();
+            case 7: {
                 Set *first = new Set;
                 first->add(1);
                 first->add(2);
                 first->add(3);
+
                 Set *second = new Set();
                 second->add(3);
                 second->add(4);
                 second->add(5);
-                subset = createUnion(first, second);
-                subset->print();
-                delete first;
-                delete second;
-                delete subset;
+
+                Set *unionSet = first->createUnion(second);
+                unionSet->print();
+
+                delete first, second, unionSet;
                 break;
             }
             case 8: {
@@ -204,51 +189,22 @@ int main() {
                 first->add(2);
                 first->add(3);
                 first->add(4);
+
                 Set *second = new Set;
                 second->add(5);
                 second->add(1);
                 second->add(4);
                 second->add(15);
-                intersection(first, second)->print(); // TODO add getting data from input
-                delete first, second;
+
+                Set *intersectionSet = first->intersection(second);
+                intersectionSet->print();
+
+                delete first, second, intersectionSet;
                 break;
             }
             default:
-                end = true;
                 delete set;
-                break;
+                return 0;
         }
     }
-}
-
-bool isSubset(Set *set, Set *subset) {
-    return set->isSubset(subset);
-}
-
-void add(Set *set, int value) {
-    set->add(value);
-}
-
-void remove(Set *set, int value) {
-    set->remove(value);
-}
-
-void print(Set *set) {
-    set->print();
-}
-
-bool isEmpty(Set *set) {
-    return set->isEmpty();
-}
-
-long cardinality(Set *set) {
-    return set->cardinality();
-}
-
-Set *createUnion(Set *first, Set *second) {
-    return first->createUnion(second);
-}
-
-Set *intersection(Set *first, Set *second) {
-    return first->intersection(second);
 }
