@@ -14,7 +14,7 @@ struct Set {
     void add(int value) {
         Number *newNumber = new Number();
         newNumber->value = value;
-        if (first == NULL) {
+        if (isEmpty()) {
             first = newNumber;
         } else if (isNotADuplication(value)) {
             Number *temp;
@@ -39,7 +39,7 @@ struct Set {
     }
 
     void remove(int value) {
-        if (first == NULL) return;
+        if (isEmpty()) return;
         if (first->value == value) {
             if (first->next == NULL) {
                 first = NULL;
@@ -59,7 +59,7 @@ struct Set {
     }
 
     void print() {
-        if (first != NULL) {
+        if (!isEmpty()) {
             Number *temp = first;
             cout << "Wypisuje: " << endl;
             while (true) {
@@ -77,7 +77,7 @@ struct Set {
     }
 
     long cardinality() {
-        if (first == NULL) return 0;
+        if (isEmpty()) return 0;
         long sum = 1;
 
         Number *temp = first;
