@@ -161,16 +161,19 @@ int main() {
     bool end = false;
     int option;
     while (!end) {
+        int number;
+
         cout << "Podaj opcje: ";
         cin >> option;
         switch (option) {
             case 1:
-                int number;
                 cin >> number;
                 add(set, number);
                 break;
             case 2:
-                remove(set, 15);
+                number;
+                cin >> number;
+                remove(set, number);
                 break;
             case 3:
                 print(set);
