@@ -2,146 +2,144 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-//definicja wezla
-struct wezel {
-    int wartosc;           //wartosc przechowywana w wezle
-    struct wezel *rodzic;  //wskaznik na rodzica
-    struct wezel *l_syn;   //wskaznik na lewe dziecko
-    struct wezel *p_syn;   //wskaznik na prawe dziecko
+struct Node {
+    int value;
+    struct Node *parent;
+    struct Node *leftChild;
+    struct Node *rightChild;
 };
-struct wezel *root;  //wskaźnik na root'a
+struct Node *root;
 
-//funkcja zwraca wskaznik elementu o najmniejszej wartosci (najbardziej na lewo)
-struct wezel *naj_lewo(struct wezel *start) {
-    if (start->l_syn != NULL)
-        return naj_lewo(start->l_syn);
+struct Node *leftMostChild(struct Node *start) {
+    if (start->leftChild != NULL)
+        return leftMostChild(start->leftChild);
     else
         return start;
 }
 
 //funkcja zwraca wezel o podanej wartosci, badz NULL, gdy taki wezel nie istnieje
-struct wezel *szukaj(struct wezel *start, int wartosc) {
+struct Node *szukaj(struct Node *start, int wartosc) {
 //jezeli wezel ma szukana wartosc to odnalezlismy go
-    if (start->wartosc == wartosc) return start;
+    if (start->value == wartosc) return start;
 //jezeli szukana wartosc jest mniejsza to szukamy w lewym poddrzewie o ile istnieje
-    else if (wartosc < start->wartosc && start->l_syn != NULL) return szukaj(start->l_syn, wartosc);
+    else if (wartosc < start->value && start->leftChild != NULL) return szukaj(start->leftChild, wartosc);
 //jezeli szukana wartosc jest wieksza to szukamy w prawym poddrzewie o ile istnieje     
-    else if (wartosc > start->wartosc && start->p_syn != NULL) return szukaj(start->p_syn, wartosc);
+    else if (wartosc > start->value && start->rightChild != NULL) return szukaj(start->rightChild, wartosc);
     return NULL;
 }
 
 //dodaje wezel o podanej wartosci n, do drzewa o korzeniu start
-int dodawanie(int n, struct wezel *start) {
+int dodawanie(int n, struct Node *start) {
 //jezeli drzewo jest puste to dodaj korzen
     if (root == NULL) {
-        root = (wezel *) malloc(sizeof *root);
-        root->wartosc = n;
-        root->l_syn = NULL;
-        root->p_syn = NULL;
-        root->rodzic = NULL;
+        root = (Node *) malloc(sizeof *root);
+        root->value = n;
+        root->leftChild = NULL;
+        root->rightChild = NULL;
+        root->parent = NULL;
     }
 //jezeli zadana wartosc jest mniejsza od korzenia idz do lewego poddrzewa
-    else if (n < start->wartosc) {
+    else if (n < start->value) {
 //jezeli lewe poddrzewo istnieje wywolaj dla niego ta funkcje rekurencyjnie
-        if (start->l_syn != NULL) {
-            dodawanie(n, start->l_syn);
+        if (start->leftChild != NULL) {
+            dodawanie(n, start->leftChild);
         }
 //jezeli lewe poddrzewo nie istnieje dodaj nowy wezel o zadanej wartosci
         else {
-            wezel *nowy = (wezel *) malloc(sizeof *root);
-            nowy->wartosc = n;
-            nowy->l_syn = NULL;
-            nowy->p_syn = NULL;
-            nowy->rodzic = start;
-            start->l_syn = nowy;
+            Node *nowy = (Node *) malloc(sizeof *root);
+            nowy->value = n;
+            nowy->leftChild = NULL;
+            nowy->rightChild = NULL;
+            nowy->parent = start;
+            start->leftChild = nowy;
         }
     }
 //jezeli zadana wartosc jest wieksza lub rowna korzeniowi idz do prawego poddrzewa   
     else {
 //jezeli prawe poddrzewo istnieje wywolaj dla niego ta funkcje rekurencyjnie      
-        if (start->p_syn != NULL) {
-            dodawanie(n, start->p_syn);
+        if (start->rightChild != NULL) {
+            dodawanie(n, start->rightChild);
         }
 //jezeli prawe poddrzewo nie istnieje dodaj nowy wezel o zadanej wartosci     
         else {
-            wezel *nowy = (wezel *) malloc(sizeof *root);
-            nowy->wartosc = n;
-            nowy->l_syn = NULL;
-            nowy->p_syn = NULL;
-            nowy->rodzic = start;
-            start->p_syn = nowy;
+            Node *nowy = (Node *) malloc(sizeof *root);
+            nowy->value = n;
+            nowy->leftChild = NULL;
+            nowy->rightChild = NULL;
+            nowy->parent = start;
+            start->rightChild = nowy;
         }
     }
     return 0;
 }
 
 //usun wezel start
-void kasowanie(struct wezel *start) {
+void kasowanie(struct Node *start) {
 //jezeli wezel nie ma dzieci
-    if (start->l_syn == NULL && start->p_syn == NULL) {
+    if (start->leftChild == NULL && start->rightChild == NULL) {
 //jezeli wezel jest korzeniem
-        if (start->rodzic == NULL) {
+        if (start->parent == NULL) {
             root = NULL;
         }
 //jezeli wezel jest po lewej stronie rodzica,
-        else if (start->rodzic->l_syn == start) {
+        else if (start->parent->leftChild == start) {
 //usun wezel z lewej strony wezla rodzica
-            start->rodzic->l_syn = NULL;
+            start->parent->leftChild = NULL;
         } else {
 //usun wezel z prawej strony wezla rodzica     
-            start->rodzic->p_syn = NULL;
+            start->parent->rightChild = NULL;
         }
         delete start;
     }
 //jezeli wezel ma tylko jedno dziecko
-    else if (start->l_syn == NULL || start->p_syn == NULL) {
+    else if (start->leftChild == NULL || start->rightChild == NULL) {
 //jezeli po lewej stronie nie ma dziecka
-        if (start->l_syn == NULL) {
+        if (start->leftChild == NULL) {
 //jezeli wezel jest korzeniem
-            if (start->rodzic == NULL) {
-                root = start->p_syn;
+            if (start->parent == NULL) {
+                root = start->rightChild;
             }
 //jezeli wezel jest po lewej stronie rodzica
-            else if (start->rodzic->l_syn == start) {
+            else if (start->parent->leftChild == start) {
 //przyczep z lewej strony rodzica wezel bedacy po prawej stronie usuwanego wezla
-                start->rodzic->l_syn = start->p_syn;
+                start->parent->leftChild = start->rightChild;
             } else {
 //przyczep z prawej strony rodzica wezel bedacy po prawej stronie usuwanego wezla
-                start->rodzic->p_syn = start->p_syn;
+                start->parent->rightChild = start->rightChild;
             }
         } else {
 //jezeli wezel jest korzeniem
-            if (start->rodzic == NULL) {
-                root = start->l_syn;
+            if (start->parent == NULL) {
+                root = start->leftChild;
             }
 //jezeli wezel jest po lewej stronie rodzica
-            else if (start->rodzic->l_syn == start) {
+            else if (start->parent->leftChild == start) {
 //przyczep z lewej strony rodzica wezel bedacy po lewej stronie usuwanego wezla
-                start->rodzic->l_syn = start->l_syn;
+                start->parent->leftChild = start->leftChild;
             } else {
 //przyczep z prawej strony rodzica wezel bedacy po prawej stronie usuwanego wezla
-                start->rodzic->p_syn = start->l_syn;
+                start->parent->rightChild = start->leftChild;
             }
         }
         delete start;
     } else {
 //wstaw w miejsce usuwanego elementu - najmniejsza wartosc z prawego poddrzewa
-        struct wezel *temp;
-        temp = naj_lewo(start->p_syn);
-        start->wartosc = temp->wartosc;
+        struct Node *temp;
+        temp = leftMostChild(start->rightChild);
+        start->value = temp->value;
         kasowanie(temp);
     }
 }
 
 //przejdz drzewo w kolejnosci zaczynajac od wezla start
-void in_order_tree_walk(struct wezel *start) {
-    if (start->l_syn != NULL) //jezeli ma dzieci po lewej stronie wywolaj funkcje rekurencyjnie
-        in_order_tree_walk(start->l_syn);
+void in_order_tree_walk(struct Node *start) {
+    if (start->leftChild != NULL) //jezeli ma dzieci po lewej stronie wywolaj funkcje rekurencyjnie
+        in_order_tree_walk(start->leftChild);
 
-    printf("%d\n", start->wartosc); //wypisz wartosc
+    printf("%d\n", start->value); //wypisz wartosc
 
-    if (start->p_syn != NULL) //jezeli ma dzieci po prawej stronie wywolaj rekurencyjnie
-        in_order_tree_walk(start->p_syn);
+    if (start->rightChild != NULL) //jezeli ma dzieci po prawej stronie wywolaj rekurencyjnie
+        in_order_tree_walk(start->rightChild);
 }
 
 //lsouje wartosc w przedziale od a do b
