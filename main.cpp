@@ -124,6 +124,19 @@ struct Set {
         }
         return this;
     }
+
+    Set *intersection(Set *set) {
+        Set *dupa = new Set;
+
+        Number *temp = first;
+        while (temp != NULL) {
+            if (set->has(temp->value)) {
+                dupa->add(temp->value);
+            }
+            temp = temp->next;
+        }
+        return dupa;
+    }
 };
 
 void add(Set *set, int value);
@@ -139,6 +152,8 @@ long cardinality(Set *set);
 bool isSubset(Set *subset, Set *set);
 
 Set *unionn(Set *first, Set *second);
+
+Set *intersection(Set *first, Set *second);
 
 int main() {
     Set *set = new Set;
@@ -191,6 +206,21 @@ int main() {
                 delete subset;
                 break;
             }
+            case 8: {
+                Set *first = new Set;
+                first->add(1);
+                first->add(2);
+                first->add(3);
+                first->add(4);
+                Set *second = new Set;
+                second->add(5);
+                second->add(1);
+                second->add(4);
+                second->add(15);
+                intersection(first, second)->print();
+                delete first, second;
+                break;
+            }
             default:
                 end = true;
                 break;
@@ -223,6 +253,9 @@ long cardinality(Set *set) {
 }
 
 Set *unionn(Set *first, Set *second) {
-
     return first->unionn(second);
+}
+
+Set *intersection(Set *first, Set *second) {
+    return first->intersection(second);
 }
