@@ -104,12 +104,19 @@ struct Set {
     }
 
     Set *createUnion(Set *set) {
-        Number *temp = set->first;
+        Set *unification = new Set;
+        Number *temp = first;
         while (temp != NULL) {
-            add(temp->value);
+            unification->add(temp->value);
             temp = temp->next;
         }
-        return this;
+
+        temp = set->first;
+        while (temp != NULL) {
+            unification->add(temp->value);
+            temp = temp->next;
+        }
+        return unification;
     }
 
     Set *intersection(Set *set) {
@@ -169,7 +176,6 @@ int main() {
 
         switch (option) {
             case 1: {
-
                 int number;
                 cin >> number;
                 set->add(number);
