@@ -158,7 +158,7 @@ int randomBetween(int bound1, int bound2) {
 int main() {
     Tree *tree = new Tree();
 
-    cout << "Podaj ilosc wzlow: ";
+    std::cout << "Podaj ilosc wzlow: ";
     int size;
     scanf("%d", &size);
 
