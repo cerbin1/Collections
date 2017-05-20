@@ -3,5 +3,5 @@ project(Collections)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Sets main.cpp)
-add_executable(BinaryTree internet.cpp)
+add_executable(Sets sets.cpp)
+add_executable(BinaryTree tree.cpp)
