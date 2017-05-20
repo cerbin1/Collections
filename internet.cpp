@@ -119,10 +119,13 @@ int randomBetween(int bound1, int bound2) {
     return std::min(bound1, bound2) + rand() % range;
 }
 
-int main(int argc, char *argv[]) {
+int main() {
     root = NULL;
 
-    int size = atoi(argv[1]);
+    printf("Podaj ilosc wzlow: ");
+    int size;
+    scanf("%d", &size);
+
     for (int i = 0; i < size; i++) {
         int randomValue = randomBetween(1, 100);
         addValue(root, randomValue);
