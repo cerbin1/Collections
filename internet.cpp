@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <algorithm>
-#include <sys/time.h>
 
 struct Node {
     int value;
@@ -16,105 +15,117 @@ struct Node {
 
 struct Tree {
     struct Node *root;
-};
 
-struct Node *findLeftMostChild(struct Node *start) {
-    if (start->leftChild != NULL) {
-        return findLeftMostChild(start->leftChild);
+    void addValue(int value) {
+        addValue(root, value);
     }
-    return start;
-}
 
-struct Node *findNodeByValue(struct Node *start, int value) {
-    if (start->value == value) {
+    Node *findNodeByValue(int value) {
+        return findNodeByValue(root, value);
+    }
+
+    void printNodes() {
+        printNodes(root);
+    }
+
+    void addValue(Node *start, int value) {
+        if (root == NULL) {
+            root = new Node(value);
+            return;
+        }
+
+        if (value < start->value) {
+            if (start->leftChild != NULL) {
+                addValue(start->leftChild, value);
+            } else {
+                Node *newNode = new Node(value);
+                newNode->parent = start;
+                start->leftChild = newNode;
+            }
+        } else {
+            if (start->rightChild != NULL) {
+                addValue(start->rightChild, value);
+            } else {
+                Node *newNode = new Node(value);
+                newNode->parent = start;
+                start->rightChild = newNode;
+            }
+        }
+    }
+
+    Node *findNodeByValue(Node *start, int value) {
+        if (start->value == value) {
+            return start;
+        }
+
+        if (value < start->value && start->leftChild != NULL) {
+            return findNodeByValue(start->leftChild, value);
+        }
+
+        if (value > start->value && start->rightChild != NULL) {
+            return findNodeByValue(start->rightChild, value);
+        }
+
+        return NULL;
+    }
+
+    void removeNode(Node *start) {
+        if (start->leftChild == NULL && start->rightChild == NULL) {
+            if (start->parent == NULL) {
+                root = NULL;
+            } else if (start->parent->leftChild == start) {
+                start->parent->leftChild = NULL;
+            } else {
+                start->parent->rightChild = NULL;
+            }
+            delete start;
+        } else if (start->leftChild == NULL || start->rightChild == NULL) {
+            if (start->leftChild == NULL) {
+                if (start->parent == NULL) {
+                    root = start->rightChild;
+                } else if (start->parent->leftChild == start) {
+
+                    start->parent->leftChild = start->rightChild;
+                } else {
+
+                    start->parent->rightChild = start->rightChild;
+                }
+            } else {
+                if (start->parent == NULL) {
+                    root = start->leftChild;
+                } else if (start->parent->leftChild == start) {
+                    start->parent->leftChild = start->leftChild;
+                } else {
+                    start->parent->rightChild = start->leftChild;
+                }
+            }
+            delete start;
+        } else {
+            Node *temp = findLeftMostChild(start->rightChild);
+            start->value = temp->value;
+            removeNode(temp);
+        }
+    }
+
+    Node *findLeftMostChild(Node *start) {
+        if (start->leftChild != NULL) {
+            return findLeftMostChild(start->leftChild);
+        }
         return start;
     }
 
-    if (value < start->value && start->leftChild != NULL) {
-        return findNodeByValue(start->leftChild, value);
-    }
-
-    if (value > start->value && start->rightChild != NULL) {
-        return findNodeByValue(start->rightChild, value);
-    }
-
-    return NULL;
-}
-
-void addValue(struct Node *start, int value) {
-    if (root == NULL) {
-        root = new Node(value);
-        return;
-    }
-
-    if (value < start->value) {
+    void printNodes(struct Node *start) {
         if (start->leftChild != NULL) {
-            addValue(start->leftChild, value);
-        } else {
-            Node *newNode = new Node(value);
-            newNode->parent = start;
-            start->leftChild = newNode;
+            printNodes(start->leftChild);
         }
-    } else {
+
+        printf("%d\n", start->value);
+
         if (start->rightChild != NULL) {
-            addValue(start->rightChild, value);
-        } else {
-            Node *newNode = new Node(value);
-            newNode->parent = start;
-            start->rightChild = newNode;
+            printNodes(start->rightChild);
         }
     }
-}
-
-void removeNode(struct Node *start) {
-    if (start->leftChild == NULL && start->rightChild == NULL) {
-        if (start->parent == NULL) {
-            root = NULL;
-        } else if (start->parent->leftChild == start) {
-            start->parent->leftChild = NULL;
-        } else {
-            start->parent->rightChild = NULL;
-        }
-        delete start;
-    } else if (start->leftChild == NULL || start->rightChild == NULL) {
-        if (start->leftChild == NULL) {
-            if (start->parent == NULL) {
-                root = start->rightChild;
-            } else if (start->parent->leftChild == start) {
-
-                start->parent->leftChild = start->rightChild;
-            } else {
-
-                start->parent->rightChild = start->rightChild;
-            }
-        } else {
-            if (start->parent == NULL) {
-                root = start->leftChild;
-            } else if (start->parent->leftChild == start) {
-                start->parent->leftChild = start->leftChild;
-            } else {
-                start->parent->rightChild = start->leftChild;
-            }
-        }
-        delete start;
-    } else {
-        Node *temp = findLeftMostChild(start->rightChild);
-        start->value = temp->value;
-        removeNode(temp);
-    }
-}
-
-void printNodes(struct Node *start) {
-    if (start->leftChild != NULL) {
-        printNodes(start->leftChild);
-    }
-
-    printf("%d\n", start->value);
-
-    if (start->rightChild != NULL) {
-        printNodes(start->rightChild);
-    }
-}
+};
 
 int randomBetween(int bound1, int bound2) {
     int range = abs(bound1 - bound2);
