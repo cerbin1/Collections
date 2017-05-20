@@ -51,15 +51,14 @@ struct Set {
     }
 
     void print() {
-        if (!isEmpty()) {
-            Number *temp = first;
+        if (isEmpty()) {
+            cout << "Nie ma elementow do wypisania." << endl;
+        } else {
             cout << "Wypisuje: " << endl;
-            while (true) {
+            Number *temp = first;
+            while (temp != NULL) {
                 cout << temp->value << endl;
                 temp = temp->next;
-                if (temp == NULL) {
-                    break;
-                }
             }
         }
     }
@@ -86,13 +85,10 @@ struct Set {
         }
 
         Number *temp = subset->first;
-        do {
-            if (!has(temp->value)) {
-                return false;
-            }
+        while (temp != NULL) {
+            if (!has(temp->value)) return false;
             temp = temp->next;
-        } while (temp->next != NULL);
-
+        }
         return true;
     }
 
@@ -107,7 +103,7 @@ struct Set {
         return false;
     }
 
-    Set *unionn(Set *set) {
+    Set *createUnion(Set *set) {
         Number *temp = set->first;
         while (temp != NULL) {
             add(temp->value);
@@ -117,16 +113,18 @@ struct Set {
     }
 
     Set *intersection(Set *set) {
-        Set *dupa = new Set;
+        Set *intersected = new Set;
 
         Number *temp = first;
         while (temp != NULL) {
             if (set->has(temp->value)) {
-                dupa->add(temp->value);
+                intersected->add(temp->value);
             }
             temp = temp->next;
         }
-        return dupa;
+        cout << "Wspolna czesc listy i ciagu: " << endl;
+        intersected->print();
+        return intersected;
     }
 };
 
@@ -142,7 +140,7 @@ long cardinality(Set *set);
 
 bool isSubset(Set *subset, Set *set);
 
-Set *unionn(Set *first, Set *second);
+Set *createUnion(Set *first, Set *second);
 
 Set *intersection(Set *first, Set *second);
 
@@ -193,7 +191,7 @@ int main() {
                 second->add(3);
                 second->add(4);
                 second->add(5);
-                subset = unionn(first, second);
+                subset = createUnion(first, second);
                 subset->print();
                 delete first;
                 delete second;
@@ -217,6 +215,7 @@ int main() {
             }
             default:
                 end = true;
+                delete set;
                 break;
         }
     }
@@ -246,8 +245,8 @@ long cardinality(Set *set) {
     return set->cardinality();
 }
 
-Set *unionn(Set *first, Set *second) {
-    return first->unionn(second);
+Set *createUnion(Set *first, Set *second) {
+    return first->createUnion(second);
 }
 
 Set *intersection(Set *first, Set *second) {
