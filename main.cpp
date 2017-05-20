@@ -189,7 +189,7 @@ int main() {
                 cout << "Czy jest podzbiorem zbioru (1, 2, 3)" << (isSubset(set, subSet) ? "tak" : "nie") << endl;
                 break;
             }
-            case 7: {
+            case 7: { // TODO Add getting numbers to two sets from user
                 Set *subset = new Set();
                 Set *first = new Set;
                 first->add(1);
@@ -217,7 +217,7 @@ int main() {
                 second->add(1);
                 second->add(4);
                 second->add(15);
-                intersection(first, second)->print();
+                intersection(first, second)->print(); // TODO add getting data from input
                 delete first, second;
                 break;
             }
