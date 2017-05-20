@@ -4,8 +4,6 @@
 #include <iostream>
 #include <iomanip>
 
-using namespace std;
-
 struct Node {
     int value;
     struct Node *parent = NULL;
@@ -173,7 +171,7 @@ int main() {
     tree->printNodes();
     tree->visualize();
 
-    cout << "Wartość węzła do usunięcia: ";
+    std::cout << "Wartość węzła do usunięcia: ";
 
     int k;
     scanf("%d", &k);
@@ -181,11 +179,11 @@ int main() {
 
     std::cout << std::endl << std::endl;
 
-    cout << "Wartosci drzewa: " << endl;
+    std::cout << "Wartosci drzewa: " << std::endl;
     tree->printNodes();
 
     if (size > 4) {
-        cout << "Wizualizacja: " << endl;
+        std::cout << "Wizualizacja: " << std::endl;
         tree->visualize();
     }
 
