@@ -75,44 +75,6 @@ struct Tree {
         return NULL;
     }
 
-    void removeNode(Node *start) {
-        if (start->leftChild == NULL && start->rightChild == NULL) {
-            if (start->parent == NULL) {
-                root = NULL;
-            } else if (start->parent->leftChild == start) {
-                start->parent->leftChild = NULL;
-            } else {
-                start->parent->rightChild = NULL;
-            }
-            delete start;
-        } else if (start->leftChild == NULL || start->rightChild == NULL) {
-            if (start->leftChild == NULL) {
-                if (start->parent == NULL) {
-                    root = start->rightChild;
-                } else if (start->parent->leftChild == start) {
-
-                    start->parent->leftChild = start->rightChild;
-                } else {
-
-                    start->parent->rightChild = start->rightChild;
-                }
-            } else {
-                if (start->parent == NULL) {
-                    root = start->leftChild;
-                } else if (start->parent->leftChild == start) {
-                    start->parent->leftChild = start->leftChild;
-                } else {
-                    start->parent->rightChild = start->leftChild;
-                }
-            }
-            delete start;
-        } else {
-            Node *temp = findLeftMostChild(start->rightChild);
-            start->value = temp->value;
-            removeNode(temp);
-        }
-    }
-
     Node *findLeftMostChild(Node *start) {
         if (start->leftChild != NULL) {
             return findLeftMostChild(start->leftChild);
@@ -168,22 +130,11 @@ int main() {
     }
     std::cout << std::endl;
 
-    tree->printNodes();
-    tree->visualize();
-
-    std::cout << "Wartość węzła do usunięcia: ";
-
-    int k;
-    std::cin >> k;
-    tree->removeNode(tree->findNodeByValue(k));
-
-    std::cout << std::endl << std::endl;
-
     std::cout << "Wartosci drzewa: " << std::endl;
     tree->printNodes();
 
     if (size > 4) {
-        std::cout << "Wizualizacja: " << std::endl;
+        std::cout << std::endl << "Wizualizacja: " << std::endl;
         tree->visualize();
     }
 
