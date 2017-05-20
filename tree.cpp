@@ -29,11 +29,15 @@ struct Tree {
     }
 
     void printNodes() {
+        cout << endl;
         printNodes(root);
+        cout << endl;
     }
 
     void visualize() {
+        cout << endl;
         visualize(root, 0);
+        cout << endl;
     }
 
     void addValue(Node *start, int value) {
