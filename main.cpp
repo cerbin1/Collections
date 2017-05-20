@@ -93,7 +93,7 @@ struct Set {
     }
 
     bool isSubset(Set *subset) {
-        if (subset->first != NULL) {
+        if (!subset->isEmpty()) {
             Number *temp = subset->first;
             do {
                 if (!has(temp->value)) {
