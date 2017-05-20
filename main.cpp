@@ -118,6 +118,15 @@ struct Set {
         }
         return false;
     }
+
+    Set *unionn(Set *set) {
+        Number *temp = set->first;
+        while (temp != NULL) {
+            add(temp->value);
+            temp = temp->next;
+        }
+        return this;
+    }
 };
 
 void add(Set *set, int value);
@@ -131,6 +140,8 @@ bool isEmpty(Set *set);
 long cardinality(Set *set);
 
 bool isSubset(Set *subset, Set *set);
+
+Set *unionn(Set *first, Set *second);
 
 int main() {
     Set *set = new Set;
@@ -166,6 +177,23 @@ int main() {
                 cout << "Czy jest podzbiorem zbioru (1, 2, 3)" << (isSubset(set, subSet) ? "tak" : "nie") << endl;
                 break;
             }
+            case 7: {
+                Set *subset = new Set();
+                Set *first = new Set;
+                first->add(1);
+                first->add(2);
+                first->add(3);
+                Set *second = new Set();
+                second->add(3);
+                second->add(4);
+                second->add(5);
+                subset = unionn(first, second);
+                subset->print();
+                delete first;
+                delete second;
+                delete subset;
+                break;
+            }
             default:
                 end = true;
                 break;
@@ -195,4 +223,9 @@ bool isEmpty(Set *set) {
 
 long cardinality(Set *set) {
     return set->cardinality();
+}
+
+Set *unionn(Set *first, Set *second) {
+
+    return first->unionn(second);
 }
