@@ -27,15 +27,15 @@ struct Tree {
     }
 
     void printNodes() {
-        cout << endl;
+        std::cout << std::endl;
         printNodes(root);
-        cout << endl;
+        std::cout << std::endl;
     }
 
     void visualize() {
-        cout << endl;
+        std::cout << std::endl;
         visualize(root, 0);
-        cout << endl;
+        std::cout << std::endl;
     }
 
     void addValue(Node *start, int value) {
@@ -124,25 +124,34 @@ int randomBetween(int bound1, int bound2) {
 int main() {
     Tree *tree = new Tree();
 
-    std::cout << "Podaj ilosc wezlow: ";
-    int size;
-    std::cin >> size;
+    std::cout << "Podaj opcje: ";
 
-    for (int i = 0; i < size; i++) {
-        int randomValue = randomBetween(1, 100);
-        tree->addValue(randomValue);
+    while (true) {
+        int choice;
+        std::cin >> choice;
+        int number;
+        switch (choice) {
+            case 1:
+                std::cin >> number;
+                tree->addValue(number);
+                break;
+            case 2:
+                std::cout << "Wartosci drzewa: " << std::endl;
+                tree->printNodes();
+                break;
+            case 3:
+                number;
+                std::cin >> number;
+                std::cout << "Referencja klucza: " << tree->findNodeByValue(number)->value
+                          << std::endl; //TODO wyrzucic value
+                break;
+            case 4:
+                std::cout << "Max wartosc: " << tree->findMax(tree->root)->value << std::endl; //TODO wyrzucic value
+                break;
+            case 5:
+                break;
+            default:
+                return 0;
+        }
     }
-    std::cout << std::endl;
-
-    std::cout << "Wartosci drzewa: " << std::endl;
-    tree->printNodes();
-
-    if (size > 4) {
-        std::cout << std::endl << "Wizualizacja: " << std::endl;
-        tree->visualize();
-    }
-
-    std::cout << tree->findMax(tree->root);
-
-    return 0;
 }
