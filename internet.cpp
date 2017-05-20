@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <algorithm>
 #include <sys/time.h>
 
 struct Node {
@@ -11,20 +12,20 @@ struct Node {
 struct Node *root;
 
 struct Node *leftMostChild(struct Node *start) {
-    if (start->leftChild != NULL)
+    if (start->leftChild != NULL) {
         return leftMostChild(start->leftChild);
-    else
-        return start;
+    }
+    return start;
 }
 
 //funkcja zwraca wezel o podanej wartosci, badz NULL, gdy taki wezel nie istnieje
-struct Node *szukaj(struct Node *start, int wartosc) {
+struct Node *findNodeByValue(struct Node *start, int value) {
 //jezeli wezel ma szukana wartosc to odnalezlismy go
-    if (start->value == wartosc) return start;
+    if (start->value == value) return start;
 //jezeli szukana wartosc jest mniejsza to szukamy w lewym poddrzewie o ile istnieje
-    else if (wartosc < start->value && start->leftChild != NULL) return szukaj(start->leftChild, wartosc);
+    else if (value < start->value && start->leftChild != NULL) return findNodeByValue(start->leftChild, value);
 //jezeli szukana wartosc jest wieksza to szukamy w prawym poddrzewie o ile istnieje     
-    else if (wartosc > start->value && start->rightChild != NULL) return szukaj(start->rightChild, wartosc);
+    else if (value > start->value && start->rightChild != NULL) return findNodeByValue(start->rightChild, value);
     return NULL;
 }
 
@@ -131,57 +132,50 @@ void kasowanie(struct Node *start) {
     }
 }
 
-//przejdz drzewo w kolejnosci zaczynajac od wezla start
 void in_order_tree_walk(struct Node *start) {
-    if (start->leftChild != NULL) //jezeli ma dzieci po lewej stronie wywolaj funkcje rekurencyjnie
+    if (start->leftChild != NULL) {
         in_order_tree_walk(start->leftChild);
+    }
 
-    printf("%d\n", start->value); //wypisz wartosc
+    printf("%d\n", start->value);
 
-    if (start->rightChild != NULL) //jezeli ma dzieci po prawej stronie wywolaj rekurencyjnie
+    if (start->rightChild != NULL) {
         in_order_tree_walk(start->rightChild);
-}
-
-//lsouje wartosc w przedziale od a do b
-int losowanie(int a, int b) {
-    if (a < b)
-        return a + (int) ((b - a + 1.0) * (rand() / (RAND_MAX + 1.0)));
-    else {
-        fprintf(stderr, "złe wartości");
-        return -1;
     }
 }
 
-//przklad uzycia drzewa BST
+int randomBetween(int bound1, int bound2) {
+    int range = abs(bound1 - bound2);
+    return std::min(bound1, bound2) + rand() % range;
+}
+
 int main(int argc, char *argv[]) {
     int i;
-//pobierz rozmiar drzewa z parametru wejsciowego
-    int a, k, size = atoi(argv[1]);
+    int size = atoi(argv[1]);
     root = NULL;
 
-    struct timezone tz;
-    struct timeval tv;
+    struct timezone _timezone;
+    struct timeval _timeValue;
 
-    gettimeofday(&tv, &tz);
-    srand(tv.tv_usec);
+    gettimeofday(&_timeValue, &_timezone);
+    srand(_timeValue.tv_usec);
 
-//losuj wartosc elementow
     for (i = 0; i < size; i++) {
-        a = losowanie(1, 100);
+        int a = randomBetween(1, 100);
         dodawanie(a, root);
     }
     printf("\n");
 
-//przejdz drzewo w kolejnosci
     in_order_tree_walk(root);
 
-//usun wartosc z drzewa
     printf("Wartość węzła do usunięcia: \n");
+
+    int k;
     scanf("%d", &k);
-    kasowanie(szukaj(root, k));
+    kasowanie(findNodeByValue(root, k));
+
     printf("\n\n");
 
-//przejdz drzewo w kolejnosci
     in_order_tree_walk(root);
 
     return 0;
