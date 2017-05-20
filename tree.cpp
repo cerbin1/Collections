@@ -4,6 +4,8 @@
 #include <iostream>
 #include <iomanip>
 
+using namespace std;
+
 struct Node {
     int value;
     struct Node *parent = NULL;
@@ -158,7 +160,7 @@ int randomBetween(int bound1, int bound2) {
 int main() {
     Tree *tree = new Tree();
 
-    printf("Podaj ilosc wzlow: ");
+    printf("Podaj ilosc wezlow: ");
     int size;
     scanf("%d", &size);
 
@@ -179,8 +181,13 @@ int main() {
 
     printf("\n\n");
 
+    cout << "Wartosci drzewa: " << endl;
     tree->printNodes();
-    tree->visualize();
+
+    if (size > 4) {
+        cout << "Wizualizacja: " << endl;
+        tree->visualize();
+    }
 
     return 0;
 }
