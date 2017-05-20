@@ -126,6 +126,38 @@ struct Set {
     }
 };
 
+bool isSubset(Set *set, Set *subset) {
+    return set->isSubset(subset);
+}
+
+void add(Set *set, int value) {
+    set->add(value);
+}
+
+void remove(Set *set, int value) {
+    set->remove(value);
+}
+
+void print(Set *set) {
+    set->print();
+}
+
+bool isEmpty(Set *set) {
+    return set->isEmpty();
+}
+
+long cardinality(Set *set) {
+    return set->cardinality();
+}
+
+Set *createUnion(Set *first, Set *second) {
+    return first->createUnion(second);
+}
+
+Set *intersection(Set *first, Set *second) {
+    return first->intersection(second);
+}
+
 int main() {
     Set *set = new Set;
 
