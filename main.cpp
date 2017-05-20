@@ -12,11 +12,14 @@ struct Set {
     Number *first = NULL;
 
     void add(int value) {
+        if (has(value)) {
+            return;
+        }
         Number *newNumber = new Number();
         newNumber->value = value;
         if (isEmpty()) {
             first = newNumber;
-        } else if (isNotADuplication(value)) {
+        } else {
             Number *temp;
             temp = first;
             while (temp->next != NULL) {
@@ -25,17 +28,6 @@ struct Set {
             temp->next = newNumber;
             newNumber->next = NULL;
         }
-    }
-
-    bool isNotADuplication(int value) {
-        Number *temp = first;
-        while (temp != NULL) {
-            if (temp->value == value) {
-                return false;
-            }
-            temp = temp->next;
-        }
-        return true;
     }
 
     void remove(int value) {
