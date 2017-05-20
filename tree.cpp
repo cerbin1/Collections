@@ -127,7 +127,7 @@ struct Tree {
             printNodes(start->leftChild);
         }
 
-        printf("%d\n", start->value);
+        std::cout << start->value << ", ";
 
         if (start->rightChild != NULL) {
             printNodes(start->rightChild);
@@ -160,7 +160,7 @@ int randomBetween(int bound1, int bound2) {
 int main() {
     Tree *tree = new Tree();
 
-    printf("Podaj ilosc wezlow: ");
+    cout << "Podaj ilosc wzlow: ";
     int size;
     scanf("%d", &size);
 
@@ -168,18 +168,18 @@ int main() {
         int randomValue = randomBetween(1, 100);
         tree->addValue(randomValue);
     }
-    printf("\n");
+    std::cout << std::endl;
 
     tree->printNodes();
     tree->visualize();
 
-    printf("Wartość węzła do usunięcia: \n");
+    cout << "Wartość węzła do usunięcia: ";
 
     int k;
     scanf("%d", &k);
     tree->removeNode(tree->findNodeByValue(k));
 
-    printf("\n\n");
+    std::cout << std::endl << std::endl;
 
     cout << "Wartosci drzewa: " << endl;
     tree->printNodes();
