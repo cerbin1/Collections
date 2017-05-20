@@ -22,22 +22,6 @@ struct Tree {
         addValue(root, value);
     }
 
-    Node *findNodeByValue(int value) {
-        return findNodeByValue(root, value);
-    }
-
-    void printNodes() {
-        std::cout << std::endl;
-        printNodes(root);
-        std::cout << std::endl;
-    }
-
-    void visualize() {
-        std::cout << std::endl;
-        visualize(root, 0);
-        std::cout << std::endl;
-    }
-
     void addValue(Node *start, int value) {
         if (root == NULL) {
             root = new Node(value);
@@ -63,20 +47,46 @@ struct Tree {
         }
     }
 
-    Node *findNodeByValue(Node *start, int value) {
+    void print() {
+        std::cout << std::endl;
+        print(root);
+        std::cout << std::endl;
+    }
+
+    void print(struct Node *start) {
+        if (start->leftChild != NULL) {
+            print(start->leftChild);
+        }
+
+        std::cout << start->value << ", ";
+
+        if (start->rightChild != NULL) {
+            print(start->rightChild);
+        }
+    }
+
+    Node *search(int value) {
+        return search(root, value);
+    }
+
+    Node *search(Node *start, int value) {
         if (start->value == value) {
             return start;
         }
 
         if (value < start->value && start->leftChild != NULL) {
-            return findNodeByValue(start->leftChild, value);
+            return search(start->leftChild, value);
         }
 
         if (value > start->value && start->rightChild != NULL) {
-            return findNodeByValue(start->rightChild, value);
+            return search(start->rightChild, value);
         }
 
         return NULL;
+    }
+
+    Node *findMax() {
+        return findMax(root);
     }
 
     Node *findMax(Node *node) {
@@ -86,16 +96,14 @@ struct Tree {
         return node;
     }
 
-    void printNodes(struct Node *start) {
-        if (start->leftChild != NULL) {
-            printNodes(start->leftChild);
-        }
+    Node *findPredecessor(Node *node) {
+        return node->parent;
+    }
 
-        std::cout << start->value << ", ";
-
-        if (start->rightChild != NULL) {
-            printNodes(start->rightChild);
-        }
+    void visualize() {
+        std::cout << std::endl;
+        visualize(root, 0);
+        std::cout << std::endl;
     }
 
     void visualize(Node *node, int indent) {
@@ -122,35 +130,57 @@ int randomBetween(int bound1, int bound2) {
 }
 
 int main() {
-    Tree *tree = new Tree();
+    Tree *tree = new Tree();;
+    std::cout << "Podaj ilosc wezlow: ";
+    int size;
+    std::cin >> size;
 
-    std::cout << "Podaj opcje: ";
+    for (int i = 0; i < size; i++) {
+        int randomValue = randomBetween(1, 100);
+        tree->addValue(randomValue);
+    }
+    std::cout << std::endl;
 
+    std::cout << "Wartosci drzewa: " << std::endl;
+    tree->print();
+
+    if (size > 4) {
+        std::cout << std::endl << "Wizualizacja: " << std::endl;
+        tree->visualize();
+    }
+
+    delete tree;
+    tree = new Tree();
+    std::cout << std::endl << "Podaj opcje: ";
     while (true) {
         int choice;
         std::cin >> choice;
-        int number;
+        int value;
         switch (choice) {
             case 1:
-                std::cin >> number;
-                tree->addValue(number);
+                std::cin >> value;
+                tree->addValue(value);
                 break;
             case 2:
                 std::cout << "Wartosci drzewa: " << std::endl;
-                tree->printNodes();
+                tree->print();
                 break;
             case 3:
-                number;
-                std::cin >> number;
-                std::cout << "Referencja klucza: " << tree->findNodeByValue(number)->value
-                          << std::endl; //TODO wyrzucic value
+                value;
+                std::cin >> value;
+                std::cout << "Referencja klucza: " << tree->search(value)->value << std::endl;
                 break;
             case 4:
-                std::cout << "Max wartosc: " << tree->findMax(tree->root)->value << std::endl; //TODO wyrzucic value
+                std::cout << "Max wartosc: " << tree->findMax() << std::endl;
                 break;
             case 5:
+                value;
+                std::cin >> value;
+                std::cout << "Max element, mniejszy od podanej wartosci: "
+                          << tree->findPredecessor(tree->search(value))->value << std::endl;
                 break;
             default:
+                delete tree;
                 return 0;
         }
     }
