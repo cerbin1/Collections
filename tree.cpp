@@ -30,6 +30,10 @@ struct Tree {
         printNodes(root);
     }
 
+    void visualize() {
+        visualize(root, 0);
+    }
+
     void addValue(Node *start, int value) {
         if (root == NULL) {
             root = new Node(value);
@@ -128,10 +132,6 @@ struct Tree {
         }
     }
 
-    void visualize() {
-        visualize(root, 0);
-    }
-
     void visualize(Node *node, int indent) {
         if (node != NULL) {
             if (node->rightChild) {
@@ -168,6 +168,7 @@ int main() {
     }
     printf("\n");
 
+    tree->printNodes();
     tree->visualize();
 
     printf("Wartość węzła do usunięcia: \n");
@@ -178,6 +179,7 @@ int main() {
 
     printf("\n\n");
 
+    tree->printNodes();
     tree->visualize();
 
     return 0;
