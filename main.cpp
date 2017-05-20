@@ -5,11 +5,7 @@ using namespace std;
 
 struct Number {
     int value;
-    Number *next;
-
-    Number() {
-        next = NULL;
-    }
+    Number *next = NULL;
 };
 
 struct Set {
@@ -50,15 +46,15 @@ struct Set {
             } else {
                 first = first->next;
             }
-            return;
-        }
-        Number *temp = first;
-        while (temp->next != NULL) {
-            if (temp->next->value == value) {
-                temp->next = temp->next->next;
-                break;
+        } else {
+            Number *temp = first;
+            while (temp->next != NULL) {
+                if (temp->next->value == value) {
+                    temp->next = temp->next->next;
+                    break;
+                }
+                temp = temp->next;
             }
-            temp = temp->next;
         }
     }
 
