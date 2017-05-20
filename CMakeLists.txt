@@ -3,5 +3,5 @@ project(Collections)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp internet.cpp)
 add_executable(Collections ${SOURCE_FILES})
