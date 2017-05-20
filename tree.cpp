@@ -160,7 +160,7 @@ int main() {
 
     std::cout << "Podaj ilosc wzlow: ";
     int size;
-    scanf("%d", &size);
+    std::cin >> size;
 
     for (int i = 0; i < size; i++) {
         int randomValue = randomBetween(1, 100);
@@ -174,7 +174,7 @@ int main() {
     std::cout << "Wartość węzła do usunięcia: ";
 
     int k;
-    scanf("%d", &k);
+    std::cin >> k;
     tree->removeNode(tree->findNodeByValue(k));
 
     std::cout << std::endl << std::endl;
