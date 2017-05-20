@@ -32,11 +32,8 @@ struct Set {
     }
 
     bool isNotADuplication(int value) {
-        if (first->value == value) {
-            return false;
-        }
         Number *temp = first;
-        while (temp->next != NULL) {
+        while (temp != NULL) {
             if (temp->value == value) {
                 return false;
             }
