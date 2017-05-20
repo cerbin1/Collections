@@ -76,8 +76,8 @@ struct Tree {
     }
 
     Node *findMax(Node *node) {
-        if (node->leftChild != NULL) {
-            return findMax(node->leftChild);
+        if (node->rightChild != NULL) {
+            return findMax(node->rightChild);
         }
         return node;
     }
@@ -137,6 +137,8 @@ int main() {
         std::cout << std::endl << "Wizualizacja: " << std::endl;
         tree->visualize();
     }
+
+    std::cout << tree->findMax(tree->root);
 
     return 0;
 }
