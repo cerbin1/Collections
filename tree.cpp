@@ -175,8 +175,10 @@ int main() {
             case 5:
                 value;
                 std::cin >> value;
-                std::cout << "Max element, mniejszy od podanej wartosci: "
-                          << tree->findPredecessor(tree->search(value))->value << std::endl;
+                if (tree->findPredecessor(tree->search(value)) != NULL) {
+                    std::cout << "Max element, mniejszy od podanej wartosci: "
+                              << tree->findPredecessor(tree->search(value))->value << std::endl;
+                }
                 break;
             default:
                 delete tree;
