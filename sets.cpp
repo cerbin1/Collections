@@ -59,6 +59,7 @@ struct Set {
                 temp = temp->next;
             }
         }
+        std::cout << std::endl;
     }
 
     bool isEmpty() {
@@ -101,17 +102,23 @@ struct Set {
         return false;
     }
 
-    Set *createUnion(Set *set) {
+    Set *createUnion(Set *first, Set *second) {
         Set *unification = new Set;
-        Number *temp = first;
+        Number *temp = first->first;
         while (temp != NULL) {
             unification->add(temp->value);
             temp = temp->next;
         }
 
-        temp = set->first;
+        temp = second->first;
         while (temp != NULL) {
             unification->add(temp->value);
+            temp = temp->next;
+        }
+
+        temp = unification->first;
+        while (temp != NULL) {
+            add(temp->value);
             temp = temp->next;
         }
         return unification;
@@ -156,7 +163,7 @@ long cardinality(Set *set) {
 }
 
 Set *createUnion(Set *first, Set *second) {
-    return first->createUnion(second);
+    return first->createUnion(first, second);
 }
 
 Set *intersection(Set *first, Set *second) {
@@ -196,46 +203,67 @@ int main() {
                 break;
             case 6: {
                 Set *subSet = new Set;
-                subSet->add(1);
-                subSet->add(2);
-                subSet->add(3);
-                std::cout << "Czy ma podzbior (1, 2, 3): " << (set->isSubset(subSet) ? "tak" : "nie") << std::endl;
+                int numbersCount;
+                std::cout << "Ile liczb chcesz podac do ciagu? " << std::endl;
+                std::cin >> numbersCount;
+                std::cout << "Podaj liczby: " << std::endl;
+                for (int i = 0; i < numbersCount; ++i) {
+                    int number;
+                    std::cin >> number;
+                    subSet->add(number);
+                }
+                std::cout << "Czy wprowadzony ciag liczb jest podzbiorem? " << (set->isSubset(subSet) ? "tak" : "nie")
+                          << std::endl;
                 break;
             }
             case 7: {
                 Set *first = new Set;
-                first->add(1);
-                first->add(2);
-                first->add(3);
+
+                int numbersCount;
+                std::cout << "Ile liczb chcesz podac pierwszego ciagu? " << std::endl;
+                std::cin >> numbersCount;
+                std::cout << "Podaj liczby: " << std::endl;
+                for (int i = 0; i < numbersCount; ++i) {
+                    int number;
+                    std::cin >> number;
+                    first->add(number);
+                }
 
                 Set *second = new Set();
-                second->add(3);
-                second->add(4);
-                second->add(5);
 
-                Set *unionSet = first->createUnion(second);
+                std::cout << "Ile liczb chcesz podac do drugiego ciagu? " << std::endl;
+                std::cin >> numbersCount;
+                std::cout << "Podaj liczby: " << std::endl;
+                for (int i = 0; i < numbersCount; ++i) {
+                    int number;
+                    std::cin >> number;
+                    second->add(number);
+                }
+
+                Set *unionSet = set->createUnion(first, second);
+                std::cout << "Stworzony podciag: " << std::endl;
                 unionSet->print();
 
                 delete first, second, unionSet;
                 break;
             }
             case 8: {
-                Set *first = new Set;
-                first->add(1);
-                first->add(2);
-                first->add(3);
-                first->add(4);
+                Set *string = new Set;
+                int numbersCount;
+                std::cout << "Ile liczb chcesz podac do ciagu? " << std::endl;
+                std::cin >> numbersCount;
+                std::cout << "Podaj liczby: " << std::endl;
+                for (int i = 0; i < numbersCount; ++i) {
+                    int number;
+                    std::cin >> number;
+                    string->add(number);
+                }
 
-                Set *second = new Set;
-                second->add(5);
-                second->add(1);
-                second->add(4);
-                second->add(15);
-
-                Set *intersectionSet = first->intersection(second);
+                Set *intersectionSet = set->intersection(string);
+                std::cout << "Zbior zawierajacy czesc wspolna podanego ciagu i listy: " << std::endl;
                 intersectionSet->print();
 
-                delete first, second, intersectionSet;
+                delete string, intersectionSet;
                 break;
             }
             default:
