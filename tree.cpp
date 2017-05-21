@@ -167,7 +167,7 @@ int main() {
             case 3:
                 value;
                 std::cin >> value;
-                std::cout << "Referencja klucza: " << tree->search(value)->value << std::endl;
+                std::cout << "Referencja klucza: " << tree->search(value) << std::endl;
                 break;
             case 4:
                 std::cout << "Max wartosc: " << tree->findMax() << std::endl;
