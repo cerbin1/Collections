@@ -1,8 +1,6 @@
 #include <cstdlib>
 #include <iostream>
 
-using namespace std;
-
 struct Number {
     int value;
     Number *next = NULL;
@@ -52,12 +50,12 @@ struct Set {
 
     void print() {
         if (isEmpty()) {
-            cout << "Zbior jest pusty." << endl;
+            std::cout << "Zbior jest pusty." << std::endl;
         } else {
-            cout << "Zbior zawiera: " << endl;
+            std::cout << "Zbior zawiera: " << std::endl;
             Number *temp = first;
             while (temp != NULL) {
-                cout << temp->value << ", ";
+                std::cout << temp->value << ", ";
                 temp = temp->next;
             }
         }
@@ -169,21 +167,21 @@ int main() {
     Set *set = new Set;
 
     while (true) {
-        cout << "Podaj opcje: ";
+        std::cout << "Podaj opcje: ";
 
         int option;
-        cin >> option;
+        std::cin >> option;
 
         switch (option) {
             case 1: {
                 int number;
-                cin >> number;
+                std::cin >> number;
                 set->add(number);
                 break;
             }
             case 2: {
                 int number;
-                cin >> number;
+                std::cin >> number;
                 set->remove(number);
                 break;
             }
@@ -191,17 +189,17 @@ int main() {
                 set->print();
                 break;
             case 4:
-                cout << "Zbior jest: " << (set->isEmpty() ? "pusty" : "niepusty") << endl;
+                std::cout << "Zbior jest: " << (set->isEmpty() ? "pusty" : "niepusty") << std::endl;
                 break;
             case 5:
-                cout << "Wielkosc zbioru: " << set->cardinality() << endl;
+                std::cout << "Wielkosc zbioru: " << set->cardinality() << std::endl;
                 break;
             case 6: {
                 Set *subSet = new Set;
                 subSet->add(1);
                 subSet->add(2);
                 subSet->add(3);
-                cout << "Czy ma podzbior (1, 2, 3): " << (set->isSubset(subSet) ? "tak" : "nie") << endl;
+                std::cout << "Czy ma podzbior (1, 2, 3): " << (set->isSubset(subSet) ? "tak" : "nie") << std::endl;
                 break;
             }
             case 7: {
