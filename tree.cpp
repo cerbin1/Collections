@@ -185,15 +185,21 @@ int main() {
                 std::cout << "Referencja klucza: " << tree->search(value) << std::endl;
                 break;
 
-            case 5:
-                std::cout << "Max wartosc: " << tree->findMax()->value << std::endl;
+            case 5: {
+                Node *maxNode = tree->findMax();
+                if (maxNode == NULL) {
+                    std::cout << "Max wartosc: Nie istnieje" << std::endl;
+                } else {
+                    std::cout << "Max wartosc: " << maxNode->value << std::endl;
+                }
                 break;
+            }
 
-            case 6:
+            case 6: {
                 std::cout << "Podaj wartosc do wyszkuania:";
                 std::cin >> value;
-                Node *maxNode = tree->search(value);
-                Node *maxNodePredecessor = tree->findPredecessor(maxNode);
+
+                Node *maxNodePredecessor = tree->findPredecessor(tree->search(value));
 
                 if (maxNodePredecessor != NULL) {
                     std::cout << "Najwiekszy element, mniejszy od podanej wartosci: "
@@ -201,6 +207,7 @@ int main() {
                               << std::endl;
                 }
                 break;
+            }
 
             default:
                 std::cout << "Zamykanie aplikacji";
