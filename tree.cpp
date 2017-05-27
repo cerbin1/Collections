@@ -5,9 +5,9 @@
 
 struct Node {
     int value;
-    struct Node *parent = NULL;
-    struct Node *leftChild = NULL;
-    struct Node *rightChild = NULL;
+    Node *parent = NULL;
+    Node *leftChild = NULL;
+    Node *rightChild = NULL;
 
     Node(int _value) {
         value = _value;
@@ -25,7 +25,7 @@ struct Node {
 };
 
 struct Tree {
-    struct Node *root;
+    Node *root;
 
     ~Tree() {
         delete root;
