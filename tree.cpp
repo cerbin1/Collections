@@ -17,10 +17,19 @@ struct Node {
         value = _value;
         parent = _parent;
     }
+
+    virtual ~Node() {
+        delete leftChild;
+        delete rightChild;
+    }
 };
 
 struct Tree {
     struct Node *root;
+
+    virtual ~Tree() {
+        delete root;
+    }
 
     void addValue(int value) {
         if (root == NULL) {
@@ -124,9 +133,9 @@ struct Tree {
             if (node->rightChild) {
                 std::cout << " /\n" << std::setw(indent) << ' ';
             }
-            std::cout << node->value << "\n ";
+            std::cout << node->value << std::endl << " ";
             if (node->leftChild) {
-                std::cout << std::setw(indent) << ' ' << " \\\n";
+                std::cout << std::setw(indent) << ' ' << " \\" << std::endl;
                 visualizeNode(node->leftChild, indent + 4);
             }
         }
@@ -150,13 +159,14 @@ int main() {
     }
 
     while (true) {
+        std::cout << std::endl << "- - - - - - - - - " << std::endl;
         std::cout << "Podaj opcje: " << std::endl;
-        std::cout << "1) Add value..." << std::endl;
-        std::cout << "2) Show values" << std::endl;
-        std::cout << "3) Show tree" << std::endl;
-        std::cout << "4) Search (reference)..." << std::endl;
-        std::cout << "5) Max value" << std::endl;
-        std::cout << "6) Max value, smaller than..." << std::endl;
+        std::cout << " 1) Dodaj liczbe..." << std::endl;
+        std::cout << " 2) Pokaz liczby" << std::endl;
+        std::cout << " 3) Pokaz drzewo" << std::endl;
+        std::cout << " 4) Wyszukaj (referencje)..." << std::endl;
+        std::cout << " 5) Najwyzsza wartosc" << std::endl;
+        std::cout << " 6) Najwyzsza wartosc, mniejsza niz..." << std::endl;
 
         int choice;
         std::cin >> choice;
@@ -210,7 +220,7 @@ int main() {
             }
 
             default:
-                std::cout << "Zamykanie aplikacji";
+                std::cout << "Nieznana wartosc: " << choice << ". Zamykanie aplikacji";
                 delete tree;
                 return 0;
         }
