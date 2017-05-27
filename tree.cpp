@@ -238,7 +238,12 @@ int main() {
 
                 Node *maxNodePredecessor = tree->findPredecessor(value);
 
-                if (maxNodePredecessor != NULL) {
+                if (maxNodePredecessor == NULL) {
+                    std::cout << "Najwiekszy element, mniejszy od podanej wartosci: "
+                              << "Nie istnieje"
+                              << std::endl;
+                }
+                else {
                     std::cout << "Najwiekszy element, mniejszy od podanej wartosci: "
                               << maxNodePredecessor->value
                               << std::endl;
