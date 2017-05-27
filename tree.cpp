@@ -23,92 +23,100 @@ struct Tree {
     struct Node *root;
 
     void addValue(int value) {
-        addValue(root, value);
+        if (root == NULL) {
+            root = new Node(value);
+        } else {
+            addValueToNode(root, value);
+        }
     }
 
     Node *search(int value) {
-        return search(root, value);
+        if (root == NULL) {
+            return NULL;
+        }
+        return searchFromNode(root, value);
     }
 
     Node *findMax() {
-        return findMax(root);
+        if (root == NULL) {
+            return NULL;
+        }
+        return findMaxFromNode(root);
     }
 
     void print() {
-        print(root);
+        if (root != NULL) {
+            printNode(root);
+        }
     }
 
     void visualize() {
-        std::cout << std::endl;
-        visualize(root, 0);
-        std::cout << std::endl;
-    }
-
-
-    void addValue(Node *start, int value) {
-        if (root == NULL) {
-            root = new Node(value);
-            return;
+        if (root != NULL) {
+            std::cout << std::endl;
+            visualizeNode(root, 0);
+            std::cout << std::endl;
         }
-
-        if (value < start->value) {
-            if (start->leftChild == NULL) {
-                start->leftChild = new Node(value, start);
-            } else {
-                addValue(start->leftChild, value);
-            }
-        } else {
-            if (start->rightChild == NULL) {
-                start->rightChild = new Node(value, start);
-            } else {
-                addValue(start->rightChild, value);
-            }
-        }
-    }
-
-    void print(struct Node *start) {
-        if (start->leftChild != NULL) {
-            print(start->leftChild);
-        }
-
-        std::cout << start->value << ", ";
-
-        if (start->rightChild != NULL) {
-            print(start->rightChild);
-        }
-    }
-
-    Node *search(Node *start, int value) {
-        if (start->value == value) {
-            return start;
-        }
-
-        if (value < start->value && start->leftChild != NULL) {
-            return search(start->leftChild, value);
-        }
-
-        if (value > start->value && start->rightChild != NULL) {
-            return search(start->rightChild, value);
-        }
-
-        return NULL;
-    }
-
-    Node *findMax(Node *node) {
-        if (node->rightChild != NULL) {
-            return findMax(node->rightChild);
-        }
-        return node;
     }
 
     Node *findPredecessor(Node *node) {
         return node->parent;
     }
 
-    void visualize(Node *node, int indent) {
+    void addValueToNode(Node *start, int value) {
+        if (value < start->value) {
+            if (start->leftChild == NULL) {
+                start->leftChild = new Node(value, start);
+            } else {
+                addValueToNode(start->leftChild, value);
+            }
+        } else {
+            if (start->rightChild == NULL) {
+                start->rightChild = new Node(value, start);
+            } else {
+                addValueToNode(start->rightChild, value);
+            }
+        }
+    }
+
+    void printNode(struct Node *start) {
+        if (start->leftChild != NULL) {
+            printNode(start->leftChild);
+        }
+
+        std::cout << start->value << ", ";
+
+        if (start->rightChild != NULL) {
+            printNode(start->rightChild);
+        }
+    }
+
+    Node *searchFromNode(Node *start, int value) {
+        if (start->value == value) {
+            return start;
+        }
+
+        if (value < start->value && start->leftChild != NULL) {
+            return searchFromNode(start->leftChild, value);
+        }
+
+        if (value > start->value && start->rightChild != NULL) {
+            return searchFromNode(start->rightChild, value);
+        }
+
+        return NULL;
+    }
+
+    Node *findMaxFromNode(Node *node) {
+        if (node->rightChild != NULL) {
+            return findMaxFromNode(node->rightChild);
+        }
+        return node;
+    }
+
+    void visualizeNode(Node *node, int indent) {
         if (node != NULL) {
             if (node->rightChild) {
-                visualize(node->rightChild, indent + 4);
+                visualizeNode(node->rightChild, indent + 4);
             }
             if (indent) {
                 std::cout << std::setw(indent) << ' ';
@@ -119,7 +127,7 @@ struct Tree {
             std::cout << node->value << "\n ";
             if (node->leftChild) {
                 std::cout << std::setw(indent) << ' ' << " \\\n";
-                visualize(node->leftChild, indent + 4);
+                visualizeNode(node->leftChild, indent + 4);
             }
         }
     }
@@ -159,31 +167,42 @@ int main() {
                 std::cin >> value;
                 tree->addValue(value);
                 break;
+
             case 2:
                 std::cout << "Wartosci drzewa: " << std::endl;
                 tree->print();
+                std::cout << std::endl;
                 break;
+
             case 3:
                 std::cout << "Wizualizacja drzewa: " << std::endl;
                 tree->visualize();
                 break;
+
             case 4:
-                value;
+                std::cout << "Podaj wartosc do wyszukania: ";
                 std::cin >> value;
                 std::cout << "Referencja klucza: " << tree->search(value) << std::endl;
                 break;
+
             case 5:
                 std::cout << "Max wartosc: " << tree->findMax() << std::endl;
                 break;
+
             case 6:
-                value;
+                std::cout << "Podaj wartosc do wyszkuania:";
                 std::cin >> value;
-                if (tree->findPredecessor(tree->search(value)) != NULL) {
-                    std::cout << "Max element, mniejszy od podanej wartosci: "
-                              << tree->findPredecessor(tree->search(value))->value << std::endl;
+                Node *maxNode = tree->search(value);
+                Node *maxNodePredecessor = tree->findPredecessor(maxNode);
+
+                if (maxNodePredecessor != NULL) {
+                    std::cout << "Najwiekszy element, mniejszy od podanej wartosci: " << maxNodePredecessor->value
+                              << std::endl;
                 }
                 break;
+
             default:
+                std::cout << "Zamykanie aplikacji";
                 delete tree;
                 return 0;
         }
