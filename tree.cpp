@@ -12,6 +12,11 @@ struct Node {
     Node(int _value) {
         value = _value;
     }
+
+    Node(int _value, Node *_parent) {
+        value = _value;
+        parent = _parent;
+    }
 };
 
 struct Tree {
@@ -21,6 +26,26 @@ struct Tree {
         addValue(root, value);
     }
 
+    Node *search(int value) {
+        return search(root, value);
+    }
+
+    Node *findMax() {
+        return findMax(root);
+    }
+
+    void print() {
+        print(root);
+        std::cout << std::endl;
+    }
+
+    void visualize() {
+        std::cout << std::endl;
+        visualize(root, 0);
+        std::cout << std::endl;
+    }
+
+
     void addValue(Node *start, int value) {
         if (root == NULL) {
             root = new Node(value);
@@ -28,28 +53,18 @@ struct Tree {
         }
 
         if (value < start->value) {
-            if (start->leftChild != NULL) {
-                addValue(start->leftChild, value);
+            if (start->leftChild == NULL) {
+                start->leftChild = new Node(value, start);
             } else {
-                Node *newNode = new Node(value);
-                newNode->parent = start;
-                start->leftChild = newNode;
+                addValue(start->leftChild, value);
             }
         } else {
-            if (start->rightChild != NULL) {
-                addValue(start->rightChild, value);
+            if (start->rightChild == NULL) {
+                start->rightChild = new Node(value, start);
             } else {
-                Node *newNode = new Node(value);
-                newNode->parent = start;
-                start->rightChild = newNode;
+                addValue(start->rightChild, value);
             }
         }
-    }
-
-    void print() {
-        std::cout << std::endl;
-        print(root);
-        std::cout << std::endl;
     }
 
     void print(struct Node *start) {
@@ -62,10 +77,6 @@ struct Tree {
         if (start->rightChild != NULL) {
             print(start->rightChild);
         }
-    }
-
-    Node *search(int value) {
-        return search(root, value);
     }
 
     Node *search(Node *start, int value) {
@@ -84,10 +95,6 @@ struct Tree {
         return NULL;
     }
 
-    Node *findMax() {
-        return findMax(root);
-    }
-
     Node *findMax(Node *node) {
         if (node->rightChild != NULL) {
             return findMax(node->rightChild);
@@ -97,12 +104,6 @@ struct Tree {
 
     Node *findPredecessor(Node *node) {
         return node->parent;
-    }
-
-    void visualize() {
-        std::cout << std::endl;
-        visualize(root, 0);
-        std::cout << std::endl;
     }
 
     void visualize(Node *node, int indent) {
@@ -136,11 +137,15 @@ int main() {
 
     for (int i = 0; i < size; i++) {
         int randomValue = randomBetween(1, 100);
+        std::cout << randomValue << ",";
         tree->addValue(randomValue);
     }
-    std::cout << std::endl;
 
-    std::cout << "Wartosci drzewa: " << std::endl;
+    std::cout << "Root is " << tree->root->value;
+    std::cout << "left is " << tree->root->leftChild->value;
+    std::cout << "right is " << tree->root->rightChild->value;
+
+    std::cout << std::endl << "Wartosci drzewa: " << std::endl;
     tree->print();
 
     if (size > 4) {
@@ -149,6 +154,7 @@ int main() {
     }
 
     delete tree;
+
     tree = new Tree();
     std::cout << std::endl << "Podaj opcje: ";
     while (true) {
