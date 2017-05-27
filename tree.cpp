@@ -141,6 +141,7 @@ int main() {
         tree->addValue(randomValue);
     }
 
+    std::cout << std::endl;
     std::cout << "Root is " << tree->root->value << std::endl;
     std::cout << "left is " << tree->root->leftChild->value << std::endl;
     std::cout << "right is " << tree->root->rightChild->value << std::endl;
