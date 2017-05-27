@@ -18,7 +18,7 @@ struct Node {
         parent = _parent;
     }
 
-    virtual ~Node() {
+    ~Node() {
         delete leftChild;
         delete rightChild;
     }
@@ -27,7 +27,7 @@ struct Node {
 struct Tree {
     struct Node *root;
 
-    virtual ~Tree() {
+    ~Tree() {
         delete root;
     }
 
