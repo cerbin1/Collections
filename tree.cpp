@@ -141,9 +141,9 @@ int main() {
         tree->addValue(randomValue);
     }
 
-    std::cout << "Root is " << tree->root->value;
-    std::cout << "left is " << tree->root->leftChild->value;
-    std::cout << "right is " << tree->root->rightChild->value;
+    std::cout << "Root is " << tree->root->value << std::endl;
+    std::cout << "left is " << tree->root->leftChild->value << std::endl;
+    std::cout << "right is " << tree->root->rightChild->value << std::endl;
 
     std::cout << std::endl << "Wartosci drzewa: " << std::endl;
     tree->print();
