@@ -36,7 +36,6 @@ struct Tree {
 
     void print() {
         print(root);
-        std::cout << std::endl;
     }
 
     void visualize() {
@@ -114,7 +113,9 @@ struct Tree {
             if (indent) {
                 std::cout << std::setw(indent) << ' ';
             }
-            if (node->rightChild) std::cout << " /\n" << std::setw(indent) << ' ';
+            if (node->rightChild) {
+                std::cout << " /\n" << std::setw(indent) << ' ';
+            }
             std::cout << node->value << "\n ";
             if (node->leftChild) {
                 std::cout << std::setw(indent) << ' ' << " \\\n";
@@ -131,39 +132,30 @@ int randomBetween(int bound1, int bound2) {
 
 int main() {
     Tree *tree = new Tree();;
-    std::cout << "Podaj ilosc wezlow: ";
+    std::cout << "Wygenerujemy testowe drzewo. Podaj ilosc wezlow:  ";
     int size;
     std::cin >> size;
 
     for (int i = 0; i < size; i++) {
         int randomValue = randomBetween(1, 100);
-        std::cout << randomValue << ",";
         tree->addValue(randomValue);
     }
 
-    std::cout << std::endl;
-    std::cout << "Root is " << tree->root->value << std::endl;
-    std::cout << "left is " << tree->root->leftChild->value << std::endl;
-    std::cout << "right is " << tree->root->rightChild->value << std::endl;
-
-    std::cout << std::endl << "Wartosci drzewa: " << std::endl;
-    tree->print();
-
-    if (size > 4) {
-        std::cout << std::endl << "Wizualizacja: " << std::endl;
-        tree->visualize();
-    }
-
-    delete tree;
-
-    tree = new Tree();
-    std::cout << std::endl << "Podaj opcje: ";
     while (true) {
+        std::cout << "Podaj opcje: " << std::endl;
+        std::cout << "1) Add value..." << std::endl;
+        std::cout << "2) Show values" << std::endl;
+        std::cout << "3) Show tree" << std::endl;
+        std::cout << "4) Search (reference)..." << std::endl;
+        std::cout << "5) Max value" << std::endl;
+        std::cout << "6) Max value, smaller than..." << std::endl;
+
         int choice;
         std::cin >> choice;
         int value;
         switch (choice) {
             case 1:
+                std::cout << "Podaj wartosc do dodania:";
                 std::cin >> value;
                 tree->addValue(value);
                 break;
@@ -172,14 +164,18 @@ int main() {
                 tree->print();
                 break;
             case 3:
+                std::cout << "Wizualizacja drzewa: " << std::endl;
+                tree->visualize();
+                break;
+            case 4:
                 value;
                 std::cin >> value;
                 std::cout << "Referencja klucza: " << tree->search(value) << std::endl;
                 break;
-            case 4:
+            case 5:
                 std::cout << "Max wartosc: " << tree->findMax() << std::endl;
                 break;
-            case 5:
+            case 6:
                 value;
                 std::cin >> value;
                 if (tree->findPredecessor(tree->search(value)) != NULL) {
