@@ -186,7 +186,7 @@ int main() {
                 break;
 
             case 5:
-                std::cout << "Max wartosc: " << tree->findMax() << std::endl;
+                std::cout << "Max wartosc: " << tree->findMax()->value << std::endl;
                 break;
 
             case 6:
@@ -196,7 +196,8 @@ int main() {
                 Node *maxNodePredecessor = tree->findPredecessor(maxNode);
 
                 if (maxNodePredecessor != NULL) {
-                    std::cout << "Najwiekszy element, mniejszy od podanej wartosci: " << maxNodePredecessor->value
+                    std::cout << "Najwiekszy element, mniejszy od podanej wartosci: "
+                              << maxNodePredecessor->value
                               << std::endl;
                 }
                 break;
