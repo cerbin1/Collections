@@ -67,8 +67,35 @@ struct Tree {
         }
     }
 
-    Node *findPredecessor(Node *node) {
-        return node->parent;
+    Node *findPredecessor(const int value) {
+        if (root == NULL) {
+            return NULL;
+        }
+        Node *lastBiggest = NULL;
+        findPredecessorFromNode(root, &lastBiggest, value);
+        return lastBiggest;
+    }
+
+    void findPredecessorFromNode(Node *start, Node **lastBiggest, const int value) {
+        if (start == NULL) {
+            return;
+        }
+
+        if (value <= start->value) {
+            findPredecessorFromNode(start->leftChild, lastBiggest, value);
+            return;
+        }
+
+        if (value > start->value) {
+            if (*lastBiggest == NULL) {
+                *lastBiggest = start;
+            } else {
+                if ((*lastBiggest)->value < start->value) {
+                    *lastBiggest = start;
+                }
+            }
+            findPredecessorFromNode(start->rightChild, lastBiggest, value);
+        }
     }
 
     void addValueToNode(Node *start, int value) {
@@ -209,7 +236,7 @@ int main() {
                 std::cout << "Podaj wartosc do wyszkuania:";
                 std::cin >> value;
 
-                Node *maxNodePredecessor = tree->findPredecessor(tree->search(value));
+                Node *maxNodePredecessor = tree->findPredecessor(value);
 
                 if (maxNodePredecessor != NULL) {
                     std::cout << "Najwiekszy element, mniejszy od podanej wartosci: "
