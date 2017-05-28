@@ -9,6 +9,8 @@ struct Node {
     Node *leftChild = NULL;
     Node *rightChild = NULL;
 
+    std::string hint;
+
     Node(int _value) {
         value = _value;
     }
@@ -21,6 +23,17 @@ struct Node {
     ~Node() {
         delete leftChild;
         delete rightChild;
+    }
+
+    void replaceInParentWith(Node *node) {
+        if (parent != NULL) {
+            if (parent->leftChild == this) {
+                parent->leftChild = node;
+            }
+            if (parent->rightChild == this) {
+                parent->rightChild = node;
+            }
+        }
     }
 };
 
@@ -39,6 +52,41 @@ struct Tree {
         }
     }
 
+    void removeValue(int value) {
+        if (root == NULL) return;
+
+        Node *toRemove = search(value);
+        if (toRemove == NULL) return;
+
+        if (toRemove == root) {
+            root = NULL;
+            return;
+        }
+
+        toRemove->replaceInParentWith(NULL);
+
+        if (toRemove->leftChild != NULL) {
+            iterateAndAddTo(toRemove->leftChild, toRemove->parent);
+        }
+        if (toRemove->rightChild != NULL) {
+            iterateAndAddTo(toRemove->rightChild, toRemove->parent);
+        }
+
+        delete toRemove;
+    }
+
+    void iterateAndAddTo(Node *start, Node *destination) {
+        if (start->leftChild != NULL) {
+            iterateAndAddTo(start->leftChild, destination);
+        }
+
+        addValueToNode(destination, start->value);
+
+        if (start->rightChild != NULL) {
+            iterateAndAddTo(start->rightChild, destination);
+        }
+    }
+
     Node *search(int value) {
         if (root == NULL) {
             return NULL;
@@ -51,6 +99,18 @@ struct Tree {
             return NULL;
         }
         return findMaxFromNode(root);
+    }
+
+    void transplant(Node *source, Node *destination) {
+        if (source == NULL || destination == NULL) return;
+
+        if (destination == root) {
+            root = source;
+        } else {
+            destination->replaceInParentWith(source);
+            source->parent = destination->parent;
+        }
+        delete destination;
     }
 
     void print() {
@@ -114,7 +174,7 @@ struct Tree {
         }
     }
 
-    void printNode(struct Node *start) {
+    void printNode(Node *start) {
         if (start->leftChild != NULL) {
             printNode(start->leftChild);
         }
@@ -151,17 +211,21 @@ struct Tree {
 
     void visualizeNode(Node *node, int indent) {
         if (node != NULL) {
-            if (node->rightChild) {
+            if (node->rightChild != NULL) {
                 visualizeNode(node->rightChild, indent + 4);
             }
-            if (indent) {
+            if (indent > 0) {
                 std::cout << std::setw(indent) << ' ';
             }
-            if (node->rightChild) {
+            if (node->rightChild != NULL) {
                 std::cout << " /\n" << std::setw(indent) << ' ';
             }
-            std::cout << node->value << std::endl << " ";
-            if (node->leftChild) {
+            std::cout << node->value;
+            if (!node->hint.empty()) {
+                std::cout << ": " << node->hint;
+            }
+            std::cout << std::endl << " ";
+            if (node->leftChild != NULL) {
                 std::cout << std::setw(indent) << ' ' << " \\" << std::endl;
                 visualizeNode(node->leftChild, indent + 4);
             }
@@ -189,11 +253,13 @@ int main() {
         std::cout << std::endl << "- - - - - - - - - " << std::endl;
         std::cout << "Podaj opcje: " << std::endl;
         std::cout << " 1) Dodaj liczbe..." << std::endl;
-        std::cout << " 2) Pokaz liczby" << std::endl;
-        std::cout << " 3) Pokaz drzewo" << std::endl;
-        std::cout << " 4) Wyszukaj (referencje)..." << std::endl;
-        std::cout << " 5) Najwyzsza wartosc" << std::endl;
-        std::cout << " 6) Najwyzsza wartosc, mniejsza niz..." << std::endl;
+        std::cout << " 2) Usun liczbe..." << std::endl;
+        std::cout << " 3) Pokaz liczby" << std::endl;
+        std::cout << " 4) Pokaz drzewo" << std::endl;
+        std::cout << " 5) Wyszukaj (referencje)..." << std::endl;
+        std::cout << " 6) Przenies..." << std::endl;
+        std::cout << " 7) Najwyzsza wartosc" << std::endl;
+        std::cout << " 8) Najwyzsza wartosc, mniejsza niz..." << std::endl;
 
         int choice;
         std::cin >> choice;
@@ -206,23 +272,47 @@ int main() {
                 break;
 
             case 2:
+                std::cout << "Podaj wartosc do usuniecia:";
+                std::cin >> value;
+                tree->removeValue(value);
+                break;
+
+            case 3:
                 std::cout << "Wartosci drzewa: " << std::endl;
                 tree->print();
                 std::cout << std::endl;
                 break;
 
-            case 3:
+            case 4:
                 std::cout << "Wizualizacja drzewa: " << std::endl;
                 tree->visualize();
                 break;
 
-            case 4:
+            case 5: {
                 std::cout << "Podaj wartosc do wyszukania: ";
                 std::cin >> value;
-                std::cout << "Referencja klucza: " << tree->search(value) << std::endl;
+                Node *node = tree->search(value);
+                if (node != NULL) {
+                    node->hint = "I found it";
+                }
+                std::cout << "Referencja klucza: " << node << std::endl;
                 break;
+            }
 
-            case 5: {
+            case 6: {
+                std::cout << "Podaj wartosc ktora chcesz przeniesc: ";
+                std::cin >> value;
+                Node *source = tree->search(value);
+
+                std::cout << "Podaj wartosc DO ktorej chcesz przeniesc: ";
+                std::cin >> value;
+                Node *destination = tree->search(value);
+
+                tree->transplant(source, destination);
+                break;
+            }
+
+            case 7: {
                 Node *maxNode = tree->findMax();
                 if (maxNode == NULL) {
                     std::cout << "Max wartosc: Nie istnieje" << std::endl;
@@ -232,7 +322,7 @@ int main() {
                 break;
             }
 
-            case 6: {
+            case 8: {
                 std::cout << "Podaj wartosc do wyszkuania:";
                 std::cin >> value;
 
@@ -242,8 +332,7 @@ int main() {
                     std::cout << "Najwiekszy element, mniejszy od podanej wartosci: "
                               << "Nie istnieje"
                               << std::endl;
-                }
-                else {
+                } else {
                     std::cout << "Najwiekszy element, mniejszy od podanej wartosci: "
                               << maxNodePredecessor->value
                               << std::endl;
