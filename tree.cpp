@@ -159,17 +159,23 @@ struct Tree {
     }
 
     void addValueToNode(Node *start, int value) {
-        if (value < start->value) {
+        addNodeToNode(start, new Node(value));
+    }
+
+    void addNodeToNode(Node *start, Node *node) {
+        if (node->value < start->value) {
             if (start->leftChild == NULL) {
-                start->leftChild = new Node(value, start);
+                start->leftChild = node;
+                node->parent = start;
             } else {
-                addValueToNode(start->leftChild, value);
+                addNodeToNode(start->leftChild, node);
             }
         } else {
             if (start->rightChild == NULL) {
-                start->rightChild = new Node(value, start);
+                start->rightChild = node;
+                node->parent = start;
             } else {
-                addValueToNode(start->rightChild, value);
+                addNodeToNode(start->rightChild, node);
             }
         }
     }
