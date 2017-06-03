@@ -5,3 +5,4 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(Sets sets.cpp)
 add_executable(BinaryTree tree.cpp)
+add_executable(Heap heap.cpp)
