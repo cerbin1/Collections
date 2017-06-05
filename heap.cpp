@@ -112,6 +112,17 @@ public:
     int top() {
         return elements.at(0);
     }
+
+    void print() {
+        std::cout << "{";
+        if (!elements.empty()) {
+            std::cout << elements[0];
+        }
+        for (int i = 1; i < elements.size(); ++i) {
+            std::cout << ", " << elements[i];
+        }
+        std::cout << "}" << std::endl;
+    }
 };
 
 int main() {
@@ -130,7 +141,8 @@ int main() {
             std::cout << "4) Pokaz rozmiar kopca" << std::endl;
             std::cout << "5) Czy kopiec pusty" << std::endl;
             std::cout << "6) Usun kopiec" << std::endl;
-            std::cout << "7) Wyjdz z programu" << std::endl;
+            std::cout << "7) Pokaz kopiec" << std::endl;
+            std::cout << "8) Wyjdz z programu" << std::endl;
         }
 
         std::cout << "Podaj opcje: ";
@@ -194,6 +206,10 @@ int main() {
                     break;
 
                 case 7:
+                    heap->print();
+                    break;
+
+                case 8:
                     delete heap;
                     return 0;
 
